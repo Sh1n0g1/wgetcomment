@@ -8,14 +8,13 @@ import csv
 USER_AGENT = 'wgetcomment 1.0'
 
 def analyze_comment(comment):
-  symbol_count=0;
+  symbol_count = 0;
   for c in comment:
     if (ord(c) > 0x20 and ord(c) < 0x30) or (ord(c) > 0x39 and ord(c) < 0x41) or (ord(c) > 0x5A and ord(c) < 0x61) or (ord(c) > 0x7A and ord(c) < 0x7F):
-      symbol_count+=1
+      symbol_count += 1
   
   return symbol_count/ len(comment)
   
-
 def output(type, comments):
   if output.csvoutput:
     try:
@@ -30,17 +29,17 @@ def output(type, comments):
       exit()
   else:
     for comment in comments:
-      output.counter +=1
+      output.counter += 1
       print("[%s %3d]: %s" % (type.ljust(4), output.counter, comment.strip()))
 output.counter=0
 
 #.Get the URL from the command line argument
 if len(sys.argv) < 2:
-  print("Usage: wgetcomment <url>", file=sys.stderr)
+  print("usage: wgetcomment [url]\n       wgetcomment [url] [csvfilename]", file=sys.stderr)
   exit()
   
 url=sys.argv[1]
-if len(sys.argv)==3:
+if len(sys.argv) == 3:
   output.csvoutput = True
   output.filename = sys.argv[2]
   if os.path.exists(output.filename):
@@ -62,25 +61,25 @@ if response.status_code >= 400:
   print("[-] An error is happening when accessing the URL:%s\n    Status code is %s." % (url, response.status_code), file=sys.stderr)
   exit()
 
-contents=response.text
+contents = response.text
 
 #3.Extract the comment
 #html comment <!--  -->
 print("[+] Extracting comments")
-htmlcomments=re.findall("<!--(.*?)-->", contents, flags=re.DOTALL)
+htmlcomments = re.findall("<!--(.*?)-->", contents, flags=re.DOTALL)
 
 #js <script > </script> /* */, //
-javascripts=re.findall("<script[^>]*>(.*?)</script>", contents, flags=re.DOTALL)
-jscomments=[]
+javascripts = re.findall("<script[^>]*>(.*?)</script>", contents, flags=re.DOTALL)
+jscomments = []
 for javascript in javascripts:
   jscomments += re.findall("/\*(.*?)\*/", javascript, flags=re.DOTALL)
   jscomments += re.findall("[^:'\"\\\\]//(.*)", javascript)
 
 #css /* */
-csss=re.findall("<style[^>]*>(.*?)</style>", contents, flags=re.DOTALL)
-csscomments=[];
+csss = re.findall("<style[^>]*>(.*?)</style>", contents, flags=re.DOTALL)
+csscomments = [];
 for css in csss:
-  csscomments+=re.findall("/\*(.*?)\*/", css, flags=re.DOTALL)
+  csscomments += re.findall("/\*(.*?)\*/", css, flags=re.DOTALL)
 
 #4.Print the comment
 output("HTML", htmlcomments)
