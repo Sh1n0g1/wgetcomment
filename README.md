@@ -2,7 +2,10 @@
 A tool to collect comments from websites
 
 # How to use
-python3 wgetcomment.py <url>
+## Print the result
+python3 wgetcomment.py url
+## Save the result in csv
+python3 wgetcomment.py url csvfilename
 
 # Features
 1. Get the URL from the command line argument
