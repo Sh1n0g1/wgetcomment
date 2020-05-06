@@ -15,3 +15,9 @@ python3 wgetcomment.py url csvfilename
 
 ![Example](https://github.com/Sh1n0g1/wgetcomment/raw/master/example.png "Example")
 
+
+![CSVExample](https://github.com/Sh1n0g1/wgetcomment/raw/master/csvexample.png "CSV Example")
+The symbol rate means how many percent of comments are symbols.  
+This number indicates wether the comment is a source code or a human comment.
+Less than 10% are human comments, but it depends on the website.
+
