@@ -13,7 +13,10 @@ def analyze_comment(comment):
     if (ord(c) > 0x20 and ord(c) < 0x30) or (ord(c) > 0x39 and ord(c) < 0x41) or (ord(c) > 0x5A and ord(c) < 0x61) or (ord(c) > 0x7A and ord(c) < 0x7F):
       symbol_count += 1
   
-  return symbol_count/ len(comment)
+  if len(comment) > 0:
+    return symbol_count/ len(comment)
+  else:
+    return 0
   
 def output(type, comments):
   if output.csvoutput:
@@ -25,7 +28,7 @@ def output(type, comments):
           
           csvwriter.writerow([output.counter, type, analyze_comment(comment), comment])
     except Exception as e:
-      print("[-] Can not access to the file \"%s\"\n    Error:%s" % (filename, e))
+      print("[-] Can not access to the file \"%s\"\n    Error:%s" % (output.filename, e))
       exit()
   else:
     for comment in comments:
